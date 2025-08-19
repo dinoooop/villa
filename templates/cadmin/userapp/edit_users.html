@@ -1,0 +1,49 @@
+{% extends "cadmin/base.html" %}
+{% block content %}
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Edit User</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Edit User</li>
+        </ol>
+
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Edit User
+            </div>
+            <div class="card-body">
+                <form class="form" action="/users/edit/{{user.id}}/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <input name="name" type="name" placeholder="name" value="{{user.name}}">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <input name="email" type="email" placeholder="email" value="{{user.email}}">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <input name="phone" type="text" placeholder="phone" value="{{user.phone}}">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

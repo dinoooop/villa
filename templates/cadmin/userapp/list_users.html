@@ -1,0 +1,48 @@
+{% extends "cadmin/base.html" %}
+{% block content %}
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Users</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active"><a href="{% url 'add_user' %}">User (+)</a></li>
+        </ol>
+
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Users
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.phone }}</td>
+                            <td>
+                                <span class="card-text"><a href="{% url 'edit_user' id=user.id %}"><i
+                                            class="bi bi-pencil-square"></i></a></span>
+                                <span class="card-text"><a href="{% url 'delete_user' id=user.id %}"><i
+                                            class="bi bi-trash3-fill"></i></a></span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
