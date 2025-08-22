@@ -1,0 +1,59 @@
+.profile-nav a{
+    color: black;
+    
+}
+
+.profile-nav a .main {
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.profile-nav a .sub {
+    font-size: .8rem;
+    color: #999;
+    font-weight: normal;
+}
+
+.custom.section-heading {
+    margin-left: 0px;
+}
+.custom-form input {
+    border: 1px solid #e33434;
+    padding: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 2rem;
+    border-radius: 5px;
+}
+
+.custom-form textarea {
+    display: block;
+    border: 1px solid #e33434;
+    padding: 1.5rem;
+    width: 100%;    
+    box-sizing: border-box;
+    margin-bottom: 2rem;
+    border-radius: 5px;
+    height: 12rem;
+}
+
+.custom-form button {
+    background-color: #e33434;
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancel-button {
+    margin-left: 1rem;
+    border: 1px solid #e33434;
+
+    background-color: #f0f0f0;
+    color: black;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    cursor: pointer;
+
+}

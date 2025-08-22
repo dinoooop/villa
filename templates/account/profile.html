@@ -1,0 +1,220 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="featured section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="left-image">
+
+
+                    {% if profile.avatar %}
+                    <img id="profile-pic" src="{{ profile.avatar.url }}" alt="Profile picture"
+                        >
+                    {% else %}
+                    <img src="{% static 'assets/images/featured.jpg' %}" alt="">
+                    {% endif %}
+                    <a href="#" id="img-upload-trigger">
+                        <img src="{% static 'assets/images/featured-icon.png' %}" alt=""
+                            style="max-width: 60px; padding: 0px;">
+                    </a>
+                </div>
+
+                <input type="file" id="uploadImage" accept="image/*">
+                <div class="modal fade" id="cropModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Crop Image</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img id="imagePreview" style="max-width:100%;" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="cropAndUpload" class="btn btn-primary">Crop & Upload</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="section-heading">
+                    <h6>| Name</h6>
+                    <h2>{{ user.first_name }}</h2>
+                </div>
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                About Me
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                {{profile.about}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Contact
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                Email: {{user.email}} <br>
+                                Phone: {{profile.phone}} <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="info-table">
+                    <ul>
+                        <li class="profile-nav">
+                            <a href="{% url 'profile_edit' %}">
+                                <img src="{% static 'assets/images/info-icon-02.png' %}" alt=""
+                                    style="max-width: 52px;">
+                                <div class="main">Edit</div>
+                                <div class="sub">Profile</div>
+                            </a>
+                        </li>
+                        <li class="profile-nav">
+                            <a href="{% url 'security_edit' %}">
+                                <img src="{% static 'assets/images/info-icon-03.png' %}" alt=""
+                                    style="max-width: 52px;">
+                                <div class="main">Security</div>
+                                <div class="sub">Password</div>
+                            </a>
+                        </li>
+                        <li class="profile-nav">
+                            <a href="{% url 'logout' %}">
+                                <img src="{% static 'assets/images/info-icon-04.png' %}" alt=""
+                                    style="max-width: 52px;">
+                                <div class="main">Logout</div>
+                                <div class="sub">Safely Logout</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<style>
+    #uploadImage {
+        display: none;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        let cropper;
+        let modal = new bootstrap.Modal(document.getElementById("cropModal"));
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+
+        $("#img-upload-trigger").on("click", function (e) {
+            e.preventDefault();
+            $("#uploadImage").trigger("click");
+        });
+
+        // Open modal with selected image
+        $("#uploadImage").on("change", function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    $("#imagePreview").attr("src", event.target.result);
+
+                    // Show modal
+                    modal.show();
+
+                    // When modal shown, initialize cropper
+                    $("#cropModal").on("shown.bs.modal", function () {
+                        if (cropper) cropper.destroy();
+                        cropper = new Cropper(document.getElementById("imagePreview"), {
+                            aspectRatio: 1,
+                            viewMode: 1,
+                        });
+                    }).on("hidden.bs.modal", function () {
+                        // Destroy cropper when modal closed
+                        if (cropper) {
+                            cropper.destroy();
+                            cropper = null;
+                        }
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Crop and upload
+        $("#cropAndUpload").on("click", function () {
+            if (!cropper) return;
+
+            cropper.getCroppedCanvas({
+                width: 300,
+                height: 300
+            }).toBlob(function (blob) {
+                let formData = new FormData();
+                formData.append("avatar", blob, "avatar.png");
+
+                $.ajax({
+                    url: "avatar/",
+                    method: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        "X-CSRFToken": csrftoken
+                    },
+                    success: function (response) {
+                        console.log("Upload successful!");
+                        $("#profile-pic").attr("src", response.avatar_url);
+                        modal.hide();
+                    },
+                    error: function () {
+                        console.error("Upload failed!");
+                        alert("Upload failed!");
+                    }
+                });
+            });
+        });
+    });
+
+</script>
+{% endblock %}

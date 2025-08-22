@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -19,10 +20,9 @@
 </head>
 
 <body class="sb-nav-fixed">
-    {% include 'cadmin/nav.html' %}
+    {% include 'layout/topnav_admin.html' %}
     <div id="layoutSidenav">
-        {% include 'cadmin/sidenav.html' %}
-
+        {% include 'layout/sidenav_admin.html' %}
         <div id="layoutSidenav_content">
             {% block content %}
             {% endblock %}

@@ -1,12 +1,7 @@
 from django.shortcuts import render
-
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, logout
+from django.shortcuts import redirect
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
-
-def login(request):
-    return render(request, 'login.html')
-
-
-def register(request):
-    return render(request, 'register.html')
+    return render(request, 'general/home.html')
