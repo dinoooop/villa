@@ -1,5 +1,11 @@
 {% extends "layout/base.html" %}
 {% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+{% endblock %}
+
+
 {% block content %}
 <div class="featured section">
     <div class="container">
@@ -12,15 +18,15 @@
                 {% if error %}
                 <p style="color:red">{{ error }}</p>
                 {% endif %}
-                <form method="post" class="custom-form" action="{% url 'profile_edit' %}">
+                <form method="post" class="custom-form" action="{% url 'front_create_project' %}">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="input-group">
+                            <div class="form-group">
                                 <label for="title">Project Name</label>
                                 <input type="text" id="title" name="title" required>
                             </div>
-                            <div class="input-group">
+                            <div class="form-group">
                                 <label for="description">Description</label>
                                 <textarea name="description" placeholder="Enter project description"></textarea>
                             </div>
@@ -35,18 +41,27 @@
                                 <input name="parking" class="form-control" type="number"
                                     placeholder="Number of parking spaces (optional)" value="1">
                             </div>
+
+                            <div class="form-group">
+                                <label for="builder">Builder</label>
+                                <select name="builder" class="form-control" required>
+                                    <!-- Populate dynamically with Django -->
+                                    <option value="">Select Builder</option>
+                                    {% for user in users %}
+                                    <option value="{{ user.id }}">{{ user.first_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="price">Price</label>
-                                <input name="price"  type="number" placeholder="Price"
-                                    value="98596.36">
+                                <input name="price" type="number" placeholder="Price" value="98596.36">
                             </div>
 
                             <div class="form-group">
                                 <label for="bedrooms">Bedrooms</label>
-                                <input name="bedrooms"  type="number"
-                                    placeholder="Number of bedrooms" value="3">
+                                <input name="bedrooms" type="number" placeholder="Number of bedrooms" value="3">
                             </div>
 
                             <div class="form-group">
@@ -60,13 +75,49 @@
                                 <input name="area" class="form-control" type="number" placeholder="Area in sq ft"
                                     value="2500">
                             </div>
+                            <div class="form-group">
+
+                                <div class="form-group">
+
+                                    <img id="fileTopImagePreview" class="img-upload-trigger"
+                                        src="{% static 'assets/images/placeholder.png' %}" alt="">
+
+                                    <input type="file" id="uploadImage" accept="image/*" hidden>
+                                    <input type="hidden" name="cropped_image_data" id="croppedImageInput">
+                                </div>
+                                <div class="modal fade" id="cropModal" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Crop Image</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <img id="imagePreview" style="max-width:100%;" />
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" id="cropAndUpload" class="btn btn-primary">Crop &
+                                                    Upload</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <button type="submit">Submit</button>
-                    <a href="{% url 'profile' %}" class="cancel-button">Cancel</a>
+                    <a href="{% url 'front_list_project' %}" class="cancel-button">Cancel</a>
                 </form>
             </div>
         </div>
     </div>
 </div>
 {% endblock content %}
+
+
+{% block footer %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+<script src="{% static 'assets/js/image-upload.js' %}"></script>
+{% endblock %}

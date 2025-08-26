@@ -27,7 +27,7 @@ def register_view(request):
             first_name=first_name,
         )
         login(request, user)
-        return redirect("home")
+        return redirect("profile")
 
     return render(request, "account/register.html")
 

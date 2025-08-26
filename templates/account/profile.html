@@ -16,8 +16,7 @@
 
 
                     {% if profile.avatar %}
-                    <img id="profile-pic" src="{{ profile.avatar.url }}" alt="Profile picture"
-                        >
+                    <img id="profile-pic" src="{{ profile.avatar.url }}" alt="Profile picture">
                     {% else %}
                     <img src="{% static 'assets/images/featured.jpg' %}" alt="">
                     {% endif %}
@@ -35,6 +34,7 @@
                                 <h5 class="modal-title">Crop Image</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
+                                    
                             </div>
                             <div class="modal-body text-center">
                                 <img id="imagePreview" style="max-width:100%;" />
@@ -87,7 +87,7 @@
                 <div class="info-table">
                     <ul>
                         <li class="profile-nav">
-                            <a href="{% url 'front_create_project' %}">
+                            <a href="{% url 'front_list_project' %}">
                                 <img src="{% static 'assets/images/info-icon-01.png' %}" alt=""
                                     style="max-width: 52px;">
                                 <div class="main">Project</div>
