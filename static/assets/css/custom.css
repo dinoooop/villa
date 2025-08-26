@@ -57,3 +57,7 @@
     cursor: pointer;
 
 }
+
+.custom-form label {
+    display: hidden;
+}

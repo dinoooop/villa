@@ -25,6 +25,7 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("cadmin/builders/", include("accounts.cadmin_urls")),
     path("cadmin/projects/", include("project.urls")),
+    path("projects/", include("project.fronturls")),
 ]
 
 if settings.DEBUG:  # ✅ only serve media in dev
