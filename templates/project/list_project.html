@@ -1,0 +1,62 @@
+{% extends "layout/base_admin.html" %}
+{% block content %}
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Projects</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active"><a href="{% url 'create_project' %}">Create Project (+)</a></li>
+        </ol>
+
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Projects
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Builder</th>
+                            <th>Bedrooms</th>
+                            <th>Bathrooms</th>
+                            <th>Area</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for project in projects %}
+                        <tr>
+                            <td>
+                                {% if project.image %}
+                                <img src="{{ project.image.url }}" width="50" alt="{{ project.title }}'s image">
+                                {% else %}
+                                <img src="/static/images/default-avatar.png" alt="Default avatar">
+                                {% endif %}
+                            </td>
+                            <td>{{ project.title }}</td>
+                            <td>{{ project.builder.first_name }}</td>
+                            <td>{{ project.bedrooms }}</td>
+                            <td>{{ project.bathrooms }}</td>
+                            <td>{{ project.area }}</td>
+                            <td>{{ project.price }}</td>
+                            <td>
+                                <span class="card-text"><a href="{% url 'edit_project' id=project.id %}"><i
+                                            class="bi bi-pencil-square"></i></a></span>
+                                <span class="card-text"><a href="{% url 'delete_project' id=project.id %}"><i
+                                            class="bi bi-trash3-fill"></i></a></span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

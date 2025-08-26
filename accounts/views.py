@@ -2,8 +2,12 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from .models import Profile
+import base64
+from django.core.files.base import ContentFile
+from django.contrib.auth.models import BaseUserManager
+from villa.utils import generate_random_password
 
 def register_view(request):
     if request.method == "POST":
@@ -59,7 +63,6 @@ def logout_view(request):
 def profile_view(request):
     user = request.user  # logged-in user
     profile = Profile.objects.filter(user=user).first()  # get profile if exists
-
     return render(request, "account/profile.html", {"user": user, "profile": profile})
 
 def profile_edit(request):
@@ -119,4 +122,72 @@ def avatar_update(request):
         return JsonResponse({"success": True, "avatar_url": profile.avatar.url})
     
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+# Read
+def list_users(request):
+    # populate profile details
+    users = User.objects.select_related('profile').exclude(is_superuser=True)
+    return render(request, 'account/list_users.html', {'users': users})
+
+def create_user(request):
+    if request.method == "POST":
+        first_name = request.POST.get("first_name") # Full name.
+        email = request.POST.get("email")
+        # give random password
+        password = generate_random_password()
+        phone = request.POST.get("phone")
+        about = request.POST.get("about")
+
+        if User.objects.filter(email=email).exists():
+            # handle duplicate email
+            return render(request, "register.html", {"error": "Email already exists"})
+
+        # use email as username
+        user = User.objects.create_user(
+            username=email,
+            email=email,
+            password=password,
+            first_name=first_name,
+        )
+
+        # create profile
+        profile = Profile.objects.create(user=user, phone=phone, about=about)
+
+        # Handle cropped avatar
+        cropped_avatar_data = request.POST.get("cropped_image_data")
+        if cropped_avatar_data:
+            format, imgstr = cropped_avatar_data.split(';base64,')
+            ext = format.split('/')[-1]
+            profile.avatar.save(f"avatar_{user.id}.{ext}", ContentFile(base64.b64decode(imgstr)), save=True)
+
+        return redirect('list_users')
+    return render(request, 'account/create_user.html')
+
+# Update
+def edit_user(request, id):
+    user = get_object_or_404(User, id=id)
+    profile = user.profile
+    if request.method == "POST":
+        user.first_name = request.POST['first_name']
+        user.email = request.POST['email']
+        profile.phone = request.POST['phone']
+        profile.about = request.POST.get("about")
+
+        # Handle cropped avatar
+        cropped_avatar_data = request.POST.get("cropped_image_data")
+        if cropped_avatar_data:
+            format, imgstr = cropped_avatar_data.split(';base64,')
+            ext = format.split('/')[-1]
+            profile.avatar.save(f"avatar_{user.id}.{ext}", ContentFile(base64.b64decode(imgstr)), save=True)
         
+        user.save()
+        profile.save()
+        return redirect('list_users')
+    
+    return render(request, 'account/edit_users.html', {'user': user, 'profile': profile})
+
+# Delete
+def delete_user(request, id):
+    user = get_object_or_404(User, id=id)
+    user.delete()
+    return redirect('list_users')

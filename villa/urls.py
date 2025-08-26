@@ -20,10 +20,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('', include('front.urls')),
     path('admin/', admin.site.urls),
     path("accounts/", include("accounts.urls")),
-    path('cadmin/builders/', include('userapp.urls')),
-    path('', include('front.urls')),
+    path("cadmin/builders/", include("accounts.cadmin_urls")),
+    path("cadmin/projects/", include("project.urls")),
 ]
 
 if settings.DEBUG:  # ✅ only serve media in dev
