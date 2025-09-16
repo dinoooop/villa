@@ -48,7 +48,6 @@ def edit_project(request, id):
 
     return render(request, "project/edit_project.html", {"project": project, "users": users})
 
-
 # Delete a project
 def delete_project(request, id):
     project = get_object_or_404(Project, id=id)

@@ -84,3 +84,9 @@ def delete_project(request, project_id):
 def list_project(request):
     projects = Project.objects.filter(builder=request.user).order_by("-created_at")
     return render(request, "project/front_list_project.html", {"projects": projects})
+
+
+def front_detail_project(request, id):
+    project = get_object_or_404(Project, id=id)
+    return render(request, "project/front_detail_project.html", {"project": project})
+    

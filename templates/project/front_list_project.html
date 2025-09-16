@@ -16,18 +16,19 @@
       <div class="col-lg-4 col-md-6">
         <div class="item">
           {% if project.image %}
-          <a href="property-details.html">
+          <a href="{% url 'front_detail_project' project.id %}">
             <img src="{{ project.image.url }}" alt="">
           </a>
           {% else %}
-          <img id="fileTopImagePreview" class="img-upload-trigger" src="{% static 'assets/images/placeholder.png' %}"
-            alt="">
+          <a href="{% url 'front_detail_project' project.id %}">
+            <img src="{% static 'assets/images/placeholder.png' %}" alt="">
+          </a>
           {% endif %}
 
 
           <span class="category">Luxury Villa</span>
           <h6>{{ project.price }}</h6>
-          <h4><a href="property-details.html">{{ project.title }}</a></h4>
+          <h4><a href="{% url 'front_detail_project' project.id %}">{{ project.title }}</a></h4>
           <ul>
             <li>Bedrooms: <span>{{ project.bedrooms }}</span></li>
             <li>Bathrooms: <span>{{ project.bathrooms }}</span></li>

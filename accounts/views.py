@@ -107,7 +107,7 @@ def security_edit(request):
 
             return redirect("login")
         else:
-            return render(request, "security.html", {"error": "Current password is incorrect"})
+            return render(request, "account/security.html", {"error": "Current password is incorrect"})
     
     return render(request, "account/security.html", {"user": user})
 

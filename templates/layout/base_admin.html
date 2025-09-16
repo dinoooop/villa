@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+    <title>{% block title %}{% endblock %} Villa Admin</title>
     <link rel="stylesheet" href="{% static 'cadmin/css/bootstrap.min.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{% static 'cadmin/css/dashboard.css' %}" rel="stylesheet" />
@@ -17,9 +17,7 @@
     <link rel="stylesheet" href="{% static 'cadmin/css/icofont.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     {% block head %}{% endblock %}
-
 </head>
-
 <body class="sb-nav-fixed">
     {% include 'layout/topnav_admin.html' %}
     <div id="layoutSidenav">
