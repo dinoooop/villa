@@ -19,7 +19,7 @@
 }
 
 .custom-form input {
-    border: 1px solid #e33434;
+    border: 1px solid #f35525;
     padding: 1.5rem;
     width: 100%;
     box-sizing: border-box;
@@ -38,7 +38,7 @@
 
 .custom-form textarea {
     display: block;
-    border: 1px solid #e33434;
+    border: 1px solid #f35525;
     padding: 1.5rem;
     width: 100%;
     box-sizing: border-box;
@@ -47,8 +47,17 @@
     height: 12rem;
 }
 
+
+.custom-form select {
+    border: 1px solid #f35525;
+    padding: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 2rem;
+    border-radius: 5px;
+}
 .custom-form button {
-    background-color: #e33434;
+    background-color: #f35525;
     color: white;
     padding: 1rem 2rem;
     border: none;
@@ -58,7 +67,7 @@
 
 .cancel-button {
     margin-left: 1rem;
-    border: 1px solid #e33434;
+    border: 1px solid #f35525;
 
     background-color: #f0f0f0;
     color: black;
