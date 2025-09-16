@@ -2,7 +2,6 @@
 {% load static %}
 {% block content %}
 <div class="properties section">
-<<<<<<< HEAD
   <div class="container">
     <div class="row">
       <div class="col-lg-4 offset-lg-4">
@@ -47,40 +46,4 @@
   </div>
   <a href="{% url 'front_create_project' %}" class="round-btn">+</a>
 </div>
-=======
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 offset-lg-4">
-                <div class="section-heading text-center">
-                    <h6>| Properties</h6>
-                    <h2>We Provide The Best Property You Like</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            {% for project in projects %}
-            <div class="col-lg-4 col-md-6">
-                <div class="item">
-                    <a href="property-details.html"><img src="{{ project.image.url }}" alt=""></a>
-                    <span class="category">Luxury Villa</span>
-                    <h6>{{ project.price }}</h6>
-                    <h4><a href="property-details.html">{{ project.title }}</a></h4>
-                    <ul>
-                        <li>Bedrooms: <span>{{ project.bedrooms }}</span></li>
-                        <li>Bathrooms: <span>{{ project.bathrooms }}</span></li>
-                        <li>Area: <span>{{ project.area }}</span></li>
-                        <li>Floor: <span>{{ project.floor }}</span></li>
-                        <li>Parking: <span>{{ project.parking }}</span></li>
-                    </ul>
-                    <div class="main-button">
-                        <a href="property-details.html">Schedule a visit</a>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
-<a href="{% url 'front_create_project' %}"><div class="plus-icon">+</div></a>
->>>>>>> 7af06eec08190ba6b4566a3afa3bf598097d2cb3
 {% endblock content %}
