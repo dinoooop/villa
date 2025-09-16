@@ -16,7 +16,7 @@ def create_project(request):
         area = request.POST.get("area")
         floor = request.POST.get("floor")
         parking = request.POST.get("parking")
-        builder = request.POST.get("builder")
+        builder = request.user.id
 
         project = Project.objects.create(
             title=title,
@@ -35,10 +35,10 @@ def create_project(request):
             format, imgstr = cropped_image_data.split(';base64,')
             ext = format.split('/')[-1]
             project.image.save(f"project_{project.id}.{ext}", ContentFile(base64.b64decode(imgstr)), save=True)
-        return redirect("list_project")  # Redirect to list after creation
+        return redirect("profile")  # Redirect to list after creation
 
     users = User.objects.exclude(is_superuser=True)
-    return render(request, "project/create_project.html", {"users": users})
+    return render(request, "project/front_create_project.html", {"users": users})
 
 
 # Edit an existing project
@@ -64,22 +64,23 @@ def edit_project(request, id):
             ext = format.split('/')[-1]
             project.image.save(f"project_{project.id}.{ext}", ContentFile(base64.b64decode(imgstr)), save=True)
 
-        return redirect("list_project")
+        return redirect("front_list_project")
 
-    return render(request, "project/edit_project.html", {"project": project, "users": users})
+    return render(request, "project/front_edit_project.html", {"project": project, "users": users})
 
 
 # Delete a project
-def delete_project(request, id):
-    project = get_object_or_404(Project, id=id)
-    project.delete()
-    
-    return redirect("list_project")
+def delete_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
 
-    
+    if request.method == "POST":
+        project.delete()
+        return redirect("list_project")
+
+    return render(request, "project/delete_project.html", {"project": project})
 
 
 # List all projects
 def list_project(request):
-    projects = Project.objects.all().order_by("-created_at")
-    return render(request, "project/list_project.html", {"projects": projects})
+    projects = Project.objects.filter(builder=request.user).order_by("-created_at")
+    return render(request, "project/front_list_project.html", {"projects": projects})

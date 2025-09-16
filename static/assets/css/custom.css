@@ -1,6 +1,6 @@
-.profile-nav a{
+.profile-nav a {
     color: black;
-    
+
 }
 
 .profile-nav a .main {
@@ -17,7 +17,17 @@
 .custom.section-heading {
     margin-left: 0px;
 }
+
 .custom-form input {
+    border: 1px solid #e33434;
+    padding: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 2rem;
+    border-radius: 5px;
+}
+
+.custom-form select {
     border: 1px solid #e33434;
     padding: 1.5rem;
     width: 100%;
@@ -30,7 +40,7 @@
     display: block;
     border: 1px solid #e33434;
     padding: 1.5rem;
-    width: 100%;    
+    width: 100%;
     box-sizing: border-box;
     margin-bottom: 2rem;
     border-radius: 5px;
@@ -57,3 +67,40 @@
     cursor: pointer;
 
 }
+
+
+/* Round button */
+.round-btn {
+    position: fixed;
+    /* Sticks to viewport */
+    bottom: 20px;
+    /* Distance from bottom */
+    right: 20px;
+    /* Distance from right */
+    width: 60px;
+    /* Button size */
+    height: 60px;
+    border-radius: 50%;
+    /* Makes it round */
+    background-color: #e33434;
+    /* Blue color */
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 24px;
+    /* Icon/text size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    /* Small shadow */
+    transition: background 0.3s ease;
+}
+
+.round-btn:hover {
+    background-color: #ef5353;
+    /* Darker blue on hover */
+}
+
+/* Round button end */

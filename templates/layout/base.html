@@ -1,4 +1,5 @@
 {% load static %}
+{% load nav_extras %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -83,10 +84,9 @@ https://templatemo.com/tm-591-villa-agency
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li><a href="{% url 'home' %}" class="active">Home</a></li>
-                            <li><a href="properties.html">Properties</a></li>
-                            <li><a href="property-details.html">Property Details</a></li>
-                            <li><a href="contact.html">Contact Us</a></li>
+                            <li><a href="{% url 'home' %}" class="{% active 'home' %}">Home</a></li>
+                            <li><a href="{% url 'properties' %}" class="{% active 'properties' %}">Properties</a></li>
+                            <li><a href="{% url 'contact' %}" class="{% active 'contact' %}">Contact Us</a></li>
                             {% if user.is_authenticated %}
                             <li><a href="{% url 'profile' %}"><i class="fa fa-user"></i> Account</a></li>
                             {% else %}
@@ -119,8 +119,8 @@ https://templatemo.com/tm-591-villa-agency
 
     <!-- Scripts -->
     <!-- Bootstrap core JavaScript -->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'assets/js/isotope.min.js' %}"></script>
     <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
     <script src="{% static 'assets/js/counter.js' %}"></script>

@@ -170,6 +170,7 @@ def edit_user(request, id):
     if request.method == "POST":
         user.first_name = request.POST['first_name']
         user.email = request.POST['email']
+        user.username = request.POST['email']
         profile.phone = request.POST['phone']
         profile.about = request.POST.get("about")
 

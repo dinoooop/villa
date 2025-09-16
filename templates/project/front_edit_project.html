@@ -1,0 +1,114 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+{% endblock %}
+{% block content %}
+<div class="featured section">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="custom section-heading">
+                    <h6>| Projects</h6>
+                    <h2>Edit Project</h2>
+                </div>
+            </div>
+        </div>
+
+        <form method="post" class="custom-form" action="{% url 'front_edit_project' project.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-12">
+                    {% if error %}
+                    <p style="color:red">{{ error }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <label for="title">Project Title</label>
+                        <input type="text" id="title" name="title" value="{{ project.title }}" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="description">About the project</label>
+                        <textarea name="description"
+                            placeholder="Enter project description">{{ project.description }}</textarea>
+                    </div>
+
+                    <div class="input-group">
+
+                        {% if project.image %}
+                        <img id="fileTopImagePreview" class="img-upload-trigger" src="{{ project.image.url }}"
+                            alt="Profile picture">
+                        {% else %}
+                        <img id="fileTopImagePreview" class="img-upload-trigger"
+                            src="{% static 'assets/images/placeholder.png' %}" alt="">
+                        {% endif %}
+
+                        <input type="file" id="uploadImage" accept="image/*" hidden>
+                        <!-- hidden input for cropped avatar -->
+                        <input type="hidden" name="cropped_image_data" id="croppedImageInput">
+                    </div>
+                    <div class="modal fade" id="cropModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Crop Image</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <img id="imagePreview" style="max-width:100%;" />
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="cropAndUpload" class="btn btn-primary">Crop &
+                                        Upload</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="price">Price</label>
+                        <input name="price" type="number" placeholder="Price" value="{{ project.price }}">
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <label for="bedrooms">Bedrooms</label>
+                        <input name="bedrooms" type="number" placeholder="Number of bedrooms" value="{{ project.bedrooms }}">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="bathrooms">Bathrooms</label>
+                        <input name="bathrooms" type="number" placeholder="Number of bathrooms" value="{{ project.bathrooms }}">
+                    </div>
+                    <div class="input-group">
+                        <label for="area">Area (sq ft)</label>
+                        <input name="area" type="number" placeholder="Area in sq ft" value="{{ project.area }}">
+                    </div>
+                    <div class="input-group">
+                        <label for="floor">Floor</label>
+                        <input name="floor" type="number" placeholder="Floor number (optional)" value="{{ project.floor }}">
+                    </div>
+                    <div class="input-group">
+                        <label for="parking">Parking</label>
+                        <input name="parking" type="number" placeholder="Number of parking spaces (optional)" value="{{ project.parking }}">
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <button type="submit">Submit</button>
+                    <a href="{% url 'front_list_project' %}" class="cancel-button">cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
+{% block footer %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+<script src="{% static 'assets/js/image-upload.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block content %}
+<div class="properties section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 offset-lg-4">
+        <div class="section-heading text-center">
+          <h6>| Properties</h6>
+          <h2>We Provide The Best Property You Like</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      {% for project in projects %}
+      <div class="col-lg-4 col-md-6">
+        <div class="item">
+          {% if project.image %}
+          <a href="property-details.html">
+            <img src="{{ project.image.url }}" alt="">
+          </a>
+          {% else %}
+          <img id="fileTopImagePreview" class="img-upload-trigger" src="{% static 'assets/images/placeholder.png' %}"
+            alt="">
+          {% endif %}
+
+
+          <span class="category">Luxury Villa</span>
+          <h6>{{ project.price }}</h6>
+          <h4><a href="property-details.html">{{ project.title }}</a></h4>
+          <ul>
+            <li>Bedrooms: <span>{{ project.bedrooms }}</span></li>
+            <li>Bathrooms: <span>{{ project.bathrooms }}</span></li>
+            <li>Area: <span>{{ project.area }} m2</span></li>
+            <li>Floor: <span>{{ project.floor }} th</span></li>
+            <li>Parking: <span>{{ project.parking }} Spots</span></li>
+          </ul>
+          <div class="main-button">
+            <a href="#">Schedule a visit</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+{% endblock content %}
