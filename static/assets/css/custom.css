@@ -113,3 +113,9 @@
 }
 
 /* Round button end */
+
+
+.main-image {
+    height: 20rem;
+    overflow: hidden;
+}

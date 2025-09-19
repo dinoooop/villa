@@ -6,8 +6,8 @@
     <div class="row">
       <div class="col-lg-4 offset-lg-4">
         <div class="section-heading text-center">
-          <h6>| Properties</h6>
-          <h2>My Projects</h2>
+          <h6>| {{ other.heading|default:"Properties" }}</h6>
+          <h2>{{ other.sub_heading|default:"My Projects" }}</h2>
         </div>
       </div>
     </div>
@@ -36,10 +36,17 @@
             <li>Floor: <span>{{ project.floor }} th</span></li>
             <li>Parking: <span>{{ project.parking }} Spots</span></li>
           </ul>
+          {% if other.page == 'properties' %}
+          <div class="main-button">
+            <a href="{% url 'front_detail_project' project.id %}">Schedule a visit</a>
+          </div>
+          {% else %}
           <div class="main-button">
             <a href="{% url 'front_edit_project' project.id %}">Edit</a>
           </div>
+          {% endif %}
         </div>
+
       </div>
       {% endfor %}
 

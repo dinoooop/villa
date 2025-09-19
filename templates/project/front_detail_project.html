@@ -25,20 +25,10 @@
                 <div class="main-content">
                     <span class="category">Apparment</span>
                     <h4>{{ project.title }}</h4>
-                    <p>Get <strong>the best villa agency</strong> HTML CSS Bootstrap Template for your company website.
-                        TemplateMo provides you the <a href="https://www.google.com/search?q=best+free+css+templates"
-                            target="_blank">best free CSS templates</a> in the world. Please tell your friends about it.
-                        Thank you. Cloud bread kogi bitters pitchfork shoreditch tumblr yr succulents single-origin
-                        coffee schlitz enamel pin you probably haven't heard of them ugh hella.
-
-                        <br><br>When you look for free CSS templates, you can simply type TemplateMo in any search
-                        engine website. In addition, you can type TemplateMo Digital Marketing, TemplateMo Corporate
-                        Layouts, etc. Master cleanse +1 intelligentsia swag post-ironic, slow-carb chambray knausgaard
-                        PBR&B DSA poutine neutra cardigan hoodie pop-up.
-                    </p>
+                    <p>{{ project.description }}</p>
 
                     <h4>Schedule a visit</h4>
-                    <form method="post" class="custom-form" action="{% url 'front_edit_project' project.id %}"
+                    <form method="post" class="custom-form" action="{% url 'front_schedule_visit_project' project.id %}"
                         enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="hidden" name="action" value="schedule_visit">
@@ -63,8 +53,8 @@
                         </div>
 
                         <div class="input-group">
-                            <label for="date">Schedule Date</label>
-                            <input type="date" id="date" name="date" required>
+                            <label for="scheduled_date_time">Schedule Date</label>
+                            <input type="datetime-local" id="scheduled_date_time" name="scheduled_date_time" required>
                         </div>
                         <button type="submit">Submit</button>
                         <a href="{% url 'front_list_project' %}" class="cancel-button">cancel</a>
@@ -76,20 +66,20 @@
                 <div class="info-table">
                     <ul>
                         <li>
-                            <img src="assets/images/info-icon-01.png" alt="" style="max-width: 52px;">
-                            <h4>450 m2<br><span>Total Flat Space</span></h4>
+                            <img src="{% static 'assets/images/info-icon-01.png' %}" alt="" style="max-width: 52px;">
+                            <h4>{{ project.area }} m2<br><span>Total Flat Space</span></h4>
                         </li>
                         <li>
-                            <img src="assets/images/info-icon-02.png" alt="" style="max-width: 52px;">
-                            <h4>Contract<br><span>Contract Ready</span></h4>
+                            <img src="{% static 'assets/images/info-icon-02.png' %}" alt="" style="max-width: 52px;">
+                            <h4>{{ project.floor }} th<br><span>Floor</span></h4>
                         </li>
                         <li>
-                            <img src="assets/images/info-icon-03.png" alt="" style="max-width: 52px;">
-                            <h4>Payment<br><span>Payment Process</span></h4>
+                            <img src="{% static 'assets/images/info-icon-03.png' %}" alt="" style="max-width: 52px;">
+                            <h4>{{ project.bathrooms }}<br><span>Bathroom</span></h4>
                         </li>
                         <li>
-                            <img src="assets/images/info-icon-04.png" alt="" style="max-width: 52px;">
-                            <h4>Safety<br><span>24/7 Under Control</span></h4>
+                            <img src="{% static 'assets/images/info-icon-04.png' %}" alt="" style="max-width: 52px;">
+                            <h4>{{ project.parking }}<br><span>Parking</span></h4>
                         </li>
                     </ul>
                 </div>

@@ -9,7 +9,12 @@ def home(request):
 
 def properties(request):
     projects = Project.objects.all().order_by("-created_at")
-    return render(request, 'general/properties.html', {'projects': projects})
+    other = {
+        'page': 'properties',
+        'heading': 'Properties',
+        'sub_heading': 'We Provide The Best Property You Like',
+    }
+    return render(request, "project/front_list_project.html", {"projects": projects, "other": other})
 
 def contact(request):
     return render(request, 'general/contact.html')

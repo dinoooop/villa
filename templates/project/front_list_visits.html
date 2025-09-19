@@ -1,0 +1,46 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block content %}
+<div class="properties section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 offset-lg-4">
+        <div class="section-heading text-center">
+          <h6>| Scheduled Visits</h6>
+          <h2>Project Visits</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      {% for visit in visits %}
+      <div class="col-lg-4 col-md-6">
+        <div class="item">
+          {% if visit.project.image %}
+          <a href="{% url 'front_detail_project' visit.project.id %}">
+            <img src="{{ visit.project.image.url }}" alt="">
+          </a>
+          {% else %}
+          <a href="{% url 'front_detail_project' visit.project.id %}">
+            <img src="{% static 'assets/images/placeholder.png' %}" alt="">
+          </a>
+          {% endif %}
+
+
+          <span class="category">Luxury Villa</span>
+          <h6>{{ visit.project.price }}</h6>
+          <h4><a href="{% url 'front_detail_project' visit.project.id %}">{{ visit.project.title }}</a></h4>
+          <ul>
+            <li>Visitor Name: <span>{{ visit.name }}</span></li>
+            <li>Visitor Email: <span>{{ visit.email }}</span></li>
+            <li>Visitor Phone: <span>{{ visit.phone }}</span></li>
+            <li>Scheduled Time: <span>{{ visit.scheduled_date_time }}</span></li>
+          </ul>
+        </div>
+
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+{% endblock content %}

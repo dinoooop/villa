@@ -4,7 +4,7 @@ from .models import Project
 from django.contrib.auth.models import User
 import base64
 from django.core.files.base import ContentFile
-
+from .models import Visit
 # Create a new project
 def create_project(request):
     if request.method == "POST":
@@ -85,8 +85,30 @@ def list_project(request):
     projects = Project.objects.filter(builder=request.user).order_by("-created_at")
     return render(request, "project/front_list_project.html", {"projects": projects})
 
+def list_visits(request):
+    visits = Visit.objects.filter(project__builder=request.user).order_by("-scheduled_date_time")
+    return render(request, "project/front_list_visits.html", {"visits": visits})
+
 
 def front_detail_project(request, id):
     project = get_object_or_404(Project, id=id)
     return render(request, "project/front_detail_project.html", {"project": project})
-    
+
+
+def schedule_visit_project(request, id):
+    project = get_object_or_404(Project, id=id)
+
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        phone = request.POST.get("phone")
+        scheduled_date_time = request.POST.get("scheduled_date_time")
+        project.visits.create(
+            name=name,
+            email=email,
+            phone=phone,
+            scheduled_date_time=scheduled_date_time,
+        )
+        return redirect("front_detail_project", id=project.id)
+
+    return render(request, "project/front_detail_project.html", {"project": project})
