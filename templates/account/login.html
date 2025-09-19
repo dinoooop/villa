@@ -1,41 +1,71 @@
+{% extends "layout/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% block content %}
+<div class="container min-vh-100 d-flex align-items-center justify-content-center">
+  <div class="row w-100 align-items-center justify-content-center">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login Page</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="{% static 'assets/css/simple.css' %}">
+    <!-- Left: Enlarged Content -->
+    <div class="col-md-6 d-flex flex-column align-items-left justify-content-center  mb-4 mb-md-0">
+      <h1 class="fw-bold mb-4" style="font-size: 2.5rem;">Welcome Back!</h1>
+      <p class="text-muted" style="font-size: 1.25rem;">
+        Sign in to your account to continue exploring property listings, managing your favorites, and booking new
+        places.
+        Our platform helps you stay connected and in control — anytime, anywhere.
+      </p>
+      <p class="text-muted mt-3" style="font-size: 1.2rem;">
+        Don't have an account yet? <a href="{% url 'register' %}" class="text-decoration-none"
+          style="color: rgb(255, 89, 0); font-weight: 500;">Register now</a> and get started!
+      </p>
+    </div>
 
-</head>
+    <!-- Right: Enlarged Login Form -->
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-lg border-0 rounded-4 p-5" style="font-size: 1.25rem;">
+        <h2 class="text-center mb-3" style="color: #000000; font-size: 2rem;">Login</h2>
+        <p class="text-muted mb-4" style="font-size: 1rem;">
+          Enter your credentials to continue
+        </p>
 
-<body>
-  <div class="login-container">
-    <form class="login-box" method="post" action="{% url 'login' %}">
-      {% csrf_token %}
-      <h2>Login</h2>
+        <form class="form" method="POST" action="{% url 'login' %}">
+          {% csrf_token %}
 
-      {% if error %}
-      <p style="color:red">{{ error }}</p>
-      {% endif %}
+          <!-- Email -->
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Email Address</label>
+            <input type="email" name="email" class="form-control rounded-pill px-4 py-3" placeholder="Enter your email" required>
+          </div>
 
-      <p class="my-2">Don't have an account? <a href="{% url 'register' %}">Sign Up</a></p>
+          <!-- Password -->
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Password</label>
+            <input type="password" name="password" class="form-control rounded-pill px-4 py-3"
+              placeholder="Enter your password" required>
+          </div>
 
-      <div class="input-group">
-        <label for="email">Email</label>
-        <input type="text" id="email" name="email" required>
+          <div class="mb-4">
+            {% if error %}
+            <p style="color:red">{{ error }}</p>
+            {% endif %}
+          </div>
+
+          <!-- Submit -->
+          <div class="text-center">
+            <button type="submit" class="btn rounded-pill w-100 py-3"
+              style="background-color: rgb(255, 89, 0); color: white; font-size: 1.2rem;">
+              Login
+            </button>
+
+          </div>
+
+          <!-- Error message -->
+          {% if error %}
+          <p class="text-danger text-center mt-3" style="font-size: 1.1rem;">{{ error }}</p>
+          {% endif %}
+        </form>
       </div>
-      <div class="input-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-      </div>
-      <button type="submit">Login</button>
-      <p class="my-2">Go back to <a href="{% url 'home' %}">home</a></p>
+    </div>
 
-    </form>
   </div>
-</body>
+</div>
 
-</html>
+{% endblock content %}
