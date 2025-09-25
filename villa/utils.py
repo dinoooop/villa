@@ -19,6 +19,7 @@ def utils_create_project(request):
     area = request.POST.get("area")
     floor = request.POST.get("floor")
     parking = request.POST.get("parking")
+    status = 'pending'
     builder = request.POST.get("builder")
 
     project = Project.objects.create(
@@ -29,6 +30,7 @@ def utils_create_project(request):
         area=area,
         floor=floor,
         parking=parking,
+        status=status,
         price=price,
         builder=User.objects.get(id=builder),
     )
@@ -41,3 +43,22 @@ def utils_create_project(request):
         project.image.save(f"project_{project.id}.{ext}", ContentFile(base64.b64decode(imgstr)), save=True)
         
     return project
+
+
+def save_cropped_image(request, model_instance):
+    cropped_image_data = request.POST.get("cropped_image_data")
+    if cropped_image_data:
+        format, imgstr = cropped_image_data.split(';base64,')
+        ext = format.split('/')[-1]
+        model_instance.image.save(f"cropped_{model_instance.id}.{ext}", ContentFile(base64.b64decode(imgstr)), save=True)
+    
+
+def get_statuses():
+    return {
+        'pending': 'Pending',
+        'approved': 'Approved',
+        'sold': 'Sold'
+    }
+
+
+

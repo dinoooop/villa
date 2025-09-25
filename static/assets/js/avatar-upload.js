@@ -1,0 +1,90 @@
+$(document).ready(function () {
+    let cropper;
+    let modal = new bootstrap.Modal(document.getElementById("cropModal"));
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+
+    $(".img-upload-trigger").on("click", function (e) {
+        e.preventDefault();
+        $("#uploadImage").trigger("click");
+    });
+
+    // Open modal with selected image
+    $("#uploadImage").on("change", function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                $("#imagePreview").attr("src", event.target.result);
+
+                // Show modal
+                modal.show();
+
+                // When modal shown, initialize cropper
+                $("#cropModal").on("shown.bs.modal", function () {
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(document.getElementById("imagePreview"), {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                    });
+                }).on("hidden.bs.modal", function () {
+                    // Destroy cropper when modal closed
+                    if (cropper) {
+                        cropper.destroy();
+                        cropper = null;
+                    }
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Crop and upload
+    $("#cropAndUpload").on("click", function () {
+        if (!cropper) return;
+
+        cropper.getCroppedCanvas({
+            width: 300,
+            height: 300
+        }).toBlob(function (blob) {
+            let formData = new FormData();
+            formData.append("avatar", blob, "avatar.png");
+
+            $.ajax({
+                url: "avatar/",
+                method: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    "X-CSRFToken": csrftoken
+                },
+                success: function (response) {
+                    console.log("Upload successful!");
+                    $("#profile-pic").attr("src", response.avatar_url);
+                    modal.hide();
+                },
+                error: function () {
+                    console.error("Upload failed!");
+                    alert("Upload failed!");
+                }
+            });
+        });
+    });
+});

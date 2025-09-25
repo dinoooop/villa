@@ -8,7 +8,7 @@ def home(request):
     return render(request, 'general/home.html')
 
 def properties(request):
-    projects = Project.objects.all().order_by("-created_at")
+    projects = Project.objects.filter(status='approved').order_by("-created_at")
     other = {
         'page': 'properties',
         'heading': 'Properties',

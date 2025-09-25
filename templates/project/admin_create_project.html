@@ -1,8 +1,7 @@
 {% extends "layout/base_admin.html" %}
 {% load static %}
 
-{% block title %} Edit Project - {% endblock %}
-
+{% block title %} Create Project - {% endblock %}
 {% block head %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
 {% endblock %}
@@ -10,35 +9,46 @@
 {% block content %}
 <main>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Edit Project</h1>
+        <h1 class="mt-4">Create Project</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Edit Project</li>
+            <li class="breadcrumb-item active">Create Project</li>
         </ol>
 
 
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
-                Edit Project
+                Create Project
             </div>
             <div class="card-body">
-                <form class="form" action="{% url 'edit_project' project.id %}" method="POST" enctype="multipart/form-data">
+                <form class="form" action="{% url 'admin_create_project' %}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <ul>
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li>
+                                            {% if field != '__all__' %}
+                                                {{ field|capfirst }}: {{ error }}
+                                            {% else %}
+                                                {{ error }}
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
                     <div class="row">
 
                         <div class="col-md-6 col-12">
                             <div class="form-group">
 
-                                {% if project.image %}
-                                <img id="fileTopImagePreview" class="img-upload-trigger" src="{{ project.image.url }}"
-                                    alt="Profile picture">
-                                {% else %}
                                 <img id="fileTopImagePreview" class="img-upload-trigger"
                                     src="{% static 'assets/images/placeholder.png' %}" alt="">
-                                {% endif %}
-
+                                
                                 <input type="file" id="uploadImage" accept="image/*" hidden>
-                                <!-- hidden input for cropped avatar -->
                                 <input type="hidden" name="cropped_image_data" id="croppedImageInput">
                             </div>
                             <div class="modal fade" id="cropModal" tabindex="-1" aria-hidden="true">
@@ -64,57 +74,85 @@
                         <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="title">Title</label>
-                                <input name="title" class="form-control" type="text" placeholder="Enter project title" value="{{ project.title }}">
+                                <input name="title" class="form-control" type="text" placeholder="Enter project title" value="Mirpro">
+                                {% if form.title.errors %}
+                                    <div class="error">{{ form.title.errors }}</div>
+                                {% endif %}
                             </div>
 
                             <div class="form-group">
                                 <label for="description">Description</label>
                                 <textarea name="description" class="form-control"
-                                    placeholder="Enter project description">{{ project.description }}</textarea>
+                                    placeholder="Enter project description">Super project</textarea>
+                                {% if form.description.errors %}
+                                    <div class="error">{{ form.description.errors }}</div>
+                                {% endif %}
                             </div>
 
                             <div class="form-group">
                                 <label for="price">Price</label>
-                                <input name="price" class="form-control" type="number" placeholder="Price" value="{{ project.price }}">
+                                <input name="price" class="form-control" type="number" placeholder="Price" value="98596.36">
                             </div>
 
                             <div class="form-group">
                                 <label for="bedrooms">Bedrooms</label>
                                 <input name="bedrooms" class="form-control" type="number"
-                                    placeholder="Number of bedrooms" value="{{ project.bedrooms }}">
+                                    placeholder="Number of bedrooms" value="2">
+                                {% if form.bedrooms.errors %}
+                                    <div class="error">{{ form.bedrooms.errors }}</div>
+                                {% endif %}
                             </div>
 
                             <div class="form-group">
                                 <label for="bathrooms">Bathrooms</label>
                                 <input name="bathrooms" class="form-control" type="number"
-                                    placeholder="Number of bathrooms" value="{{ project.bathrooms }}">
+                                    placeholder="Number of bathrooms" value="2">
                             </div>
 
                             <div class="form-group">
                                 <label for="area">Area (sq ft)</label>
-                                <input name="area" class="form-control" type="number" placeholder="Area in sq ft" value="{{ project.area }}">
+                                <input name="area" class="form-control" type="number" placeholder="Area in sq ft"
+                                    value="2500">
                             </div>
 
                             <div class="form-group">
                                 <label for="floor">Floor</label>
-                                <input name="floor" class="form-control" type="number" placeholder="Floor number (optional)" value="{{ project.floor }}">
+                                <input name="floor" class="form-control" type="number"
+                                    placeholder="Floor number (optional)" value="2">
                             </div>
 
                             <div class="form-group">
                                 <label for="parking">Parking</label>
                                 <input name="parking" class="form-control" type="number"
-                                    placeholder="Number of parking spaces (optional)" value="{{ project.parking }}">
+                                    placeholder="Number of parking spaces (optional)" value="1">
                             </div>
+
+                            <p>Status</p>
+
+                            {% for key, label in statuses.items %}
+                            <div class="form-check">
+                                <input name="status" type="radio" id="{{ key }}" class="form-check-input" value="{{ key }}"
+                                    {% if project.status == key %}checked{% endif %}>
+                                <label class="form-check-label" for="{{ key }}">{{ label }}</label>
+                            </div>
+                            {% endfor %}
+
+                            {% if form.status.errors %}
+                                <div class="error">{{ form.status.errors }}</div>
+                            {% endif %}
 
                             <div class="form-group">
                                 <label for="builder">Builder</label>
                                 <select name="builder" class="form-control">
                                     <!-- Populate dynamically with Django -->
                                     <option value="">Select Builder</option>
-                                    {% for user in users %}
-                                    <option value="{{ user.id }}" {% if project.builder.id == user.id %}selected{% endif %}>{{ user.first_name }}</option>
+                                    {% for builder in builders %}
+                                    <option value="{{ builder.id }}">{{ builder.first_name }}</option>
                                     {% endfor %}
                                 </select>
+                                {% if form.builder.errors %}
+                                    <div class="error">{{ form.builder.errors }}</div>
+                                {% endif %}
                             </div>
 
                         </div>
@@ -135,7 +173,6 @@
 {% endblock %}
 
 {% block footer %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 <script src="{% static 'assets/js/image-upload.js' %}"></script>
-{% endblock %}
+{% endblock %}                            

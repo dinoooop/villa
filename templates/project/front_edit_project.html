@@ -18,6 +18,26 @@
 
         <form method="post" class="custom-form" action="{% url 'front_edit_project' project.id %}" enctype="multipart/form-data">
             {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li>
+                                    {% if field != '__all__' %}
+                                        {{ field|capfirst }}: {{ error }}
+                                    {% else %}
+                                        {{ error }}
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+
             <div class="row">
                 <div class="col-lg-12">
                     {% if error %}

@@ -7,7 +7,7 @@
     <div class="container-fluid px-4">
         <h1 class="mt-4">Projects</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active"><a href="{% url 'create_project' %}">Create Project (+)</a></li>
+            <li class="breadcrumb-item active"><a href="{% url 'admin_create_project' %}">Create Project (+)</a></li>
         </ol>
 
 
@@ -48,9 +48,9 @@
                             <td>{{ project.area }}</td>
                             <td>{{ project.price }}</td>
                             <td>
-                                <span class="card-text"><a href="{% url 'edit_project' id=project.id %}"><i
+                                <span class="card-text"><a href="{% url 'admin_edit_project' pk=project.id %}"><i
                                             class="bi bi-pencil-square"></i></a></span>
-                                <span class="card-text"><a href="{% url 'delete_project' id=project.id %}"><i
+                                <span class="card-text"><a href="{% url 'admin_delete_project' pk=project.id %}"><i
                                             class="bi bi-trash3-fill"></i></a></span>
                             </td>
                         </tr>
