@@ -28,6 +28,7 @@
 
         <form class="form" method="POST" action="{% url 'login' %}">
           {% csrf_token %}
+          {% include "includes/form_errors.html" %}
 
           <!-- Email -->
           <div class="mb-4">
@@ -42,11 +43,7 @@
               placeholder="Enter your password" required>
           </div>
 
-          <div class="mb-4">
-            {% if error %}
-            <p style="color:red">{{ error }}</p>
-            {% endif %}
-          </div>
+          
 
           <!-- Submit -->
           <div class="text-center">
@@ -56,11 +53,6 @@
             </button>
 
           </div>
-
-          <!-- Error message -->
-          {% if error %}
-          <p class="text-danger text-center mt-3" style="font-size: 1.1rem;">{{ error }}</p>
-          {% endif %}
         </form>
       </div>
     </div>

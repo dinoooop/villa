@@ -8,28 +8,19 @@ import base64
 from django.core.files.base import ContentFile
 from django.contrib.auth.models import BaseUserManager
 from villa.utils import generate_random_password
+from .forms import RegisterForm
 
 def register_view(request):
     if request.method == "POST":
-        first_name = request.POST.get("name") # Full name.
-        email = request.POST.get("email")
-        password = request.POST.get("password")
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("profile")
+    else:
+        form = RegisterForm()
 
-        if User.objects.filter(email=email).exists():
-            # handle duplicate email
-            return render(request, "register.html", {"error": "Email already exists"})
-
-        # use email as username
-        user = User.objects.create_user(
-            username=email,
-            email=email,
-            password=password,
-            first_name=first_name,
-        )
-        login(request, user)
-        return redirect("profile")
-
-    return render(request, "account/register.html")
+    return render(request, "account/register.html", {"form": form})
 
 def login_view(request):
     if request.method == "POST":
@@ -74,6 +65,10 @@ def profile_edit(request):
         email = request.POST.get("email")
         phone = request.POST.get("phone")
         about = request.POST.get("about")
+
+        if User.objects.filter(email=email).exclude(pk=user.pk).exists():
+            return render(request, "account/profile_edit.html", {"user": user, "profile": profile, "error": "This email is already taken."})
+        
         # Update user details
         user.first_name = first_name
         user.email = email
@@ -140,7 +135,7 @@ def create_user(request):
 
         if User.objects.filter(email=email).exists():
             # handle duplicate email
-            return render(request, "register.html", {"error": "Email already exists"})
+            return render(request, "account/register.html", {"error": "Email already exists"})
 
         # use email as username
         user = User.objects.create_user(

@@ -33,6 +33,7 @@
           <h6>{{ project.price }}</h6>
           <h4><a href="{% url 'front_detail_project' project.id %}">{{ project.title }}</a></h4>
           <ul>
+            <li>Builder: <span>{{ project.builder.first_name }}</span></li>
             <li>Bedrooms: <span>{{ project.bedrooms }}</span></li>
             <li>Bathrooms: <span>{{ project.bathrooms }}</span></li>
             <li>Area: <span>{{ project.area }} m2</span></li>
@@ -56,6 +57,8 @@
 
     </div>
   </div>
+  {% if other.page != 'properties' %}
   <a href="{% url 'front_create_project' %}" class="round-btn">+</a>
+  {% endif %}
 </div>
 {% endblock content %}

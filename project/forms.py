@@ -22,7 +22,6 @@ class ProjectForm(forms.ModelForm):
             # 'created_at',
             # 'updated_at',
         ]
-        
     
     def clean_title(self):
         title = self.cleaned_data['title']

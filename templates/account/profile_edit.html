@@ -9,11 +9,13 @@
                     <h6>| Edit Profile</h6>
                     <h2>Update Your Information</h2>
                 </div>
-                {% if error %}
-                <p style="color:red">{{ error }}</p>
-                {% endif %}
                 <form method="post" class="custom-form" action="{% url 'profile_edit' %}">
                     {% csrf_token %}
+                    
+                    {% if error %}
+                    <p style="color:red">{{ error }}</p>
+                    {% endif %}
+                    
                     <div class="input-group">
                         <label for="first_name">Name</label>
                         <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" required>

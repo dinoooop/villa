@@ -1,0 +1,17 @@
+{% if form.errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <li>
+                    {% if field != '__all__' %}
+                        {{ field|capfirst }}: {{ error }}
+                    {% else %}
+                        {{ error }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
