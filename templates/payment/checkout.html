@@ -1,0 +1,90 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block content %}
+<div class="properties  section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h4>Processing Payment</h4>
+                <p>Amount: ₹{{ checkout.amount|floatformat:2 }}</p>
+                <p>For scheduling a visit to: <strong>{{ project.title }}</strong></p>
+
+                <p>Scheduled Date: {{ checkout.visit.scheduled_date_time }}</p>
+                <p>Name: {{ checkout.visit.name }}</p>
+                <p>Email: {{ checkout.visit.email }}</p>
+                <p>Phone: {{ checkout.visit.phone }}</p>
+                <p>Please click the button below to proceed with the payment.</p>
+                <div class="mb-4"></div>
+                <button onclick="rzp1.open()" class="th-button">Pay Now</button>
+            </div>
+            <div class="col-lg-4">
+                <div class="item">
+                    {% if project.image %}
+                    <a href="{% url 'front_detail_project' project.id %}">
+                        <img src="{{ project.image.url }}" alt="">
+                    </a>
+                    {% else %}
+                    <a href="{% url 'front_detail_project' project.id %}">
+                        <img src="{% static 'assets/images/placeholder.png' %}" alt="">
+                    </a>
+                    {% endif %}
+
+
+                    <span class="category">Luxury Villa</span>
+                    <h6>{{ project.price }}</h6>
+                    <h4><a href="{% url 'front_detail_project' project.id %}">{{ project.title }}</a></h4>
+                    <ul>
+                        <li>Builder: <span>{{ project.builder.first_name }}</span></li>
+                        <li>Bedrooms: <span>{{ project.bedrooms }}</span></li>
+                        <li>Bathrooms: <span>{{ project.bathrooms }}</span></li>
+                        <li>Area: <span>{{ project.area }} m2</span></li>
+                        <li>Floor: <span>{{ project.floor }} th</span></li>
+                        <li>Parking: <span>{{ project.parking }} Spots</span></li>
+                    </ul>
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        "key": "{{ razorpay_key }}",
+        "amount": "{{ checkout.amount }}",
+        "currency": "INR",
+        "name": "{{ checkout.visit.name }}",
+        "description": "Visit Scheduling Payment",
+        "order_id": "{{ checkout.order_id }}",
+        "handler": function (response) {
+            // send success response to backend
+            fetch("{% url 'handle_razorpay_response' %}", {
+                method: "POST",
+                headers: { "X-CSRFToken": "{{ csrf_token }}" },
+                body: JSON.stringify(response)
+            }).then(res => res.json())
+                .then(data => {
+                    //   alert(data.status);
+                    window.location.href = "{% url 'payment_status_page' checkout.order_id %}";
+                }).catch(err => {
+                    //   alert("Payment succeeded but there was an error processing it. Please contact support.");
+                    window.location.href = "{% url 'payment_status_page' checkout.order_id %}";
+                });
+        },
+        "prefill": {
+            "name": "{{ checkout.visit.name }}",
+            "email": "{{ checkout.visit.email }}",
+            "contact": "{{ checkout.visit.phone }}"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    // rzp1.open();
+</script>
+{% endblock %}

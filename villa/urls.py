@@ -25,6 +25,7 @@ urlpatterns = [
     path("accounts/projects/", include("project.front_project_urls")),
     path("accounts/visits/", include("project.front_visit_urls")),
     path("accounts/", include("accounts.urls")),
+    path("payments/", include("payment.urls")),
     path("cadmin/builders/", include("accounts.cadmin_urls")),
     path("cadmin/projects/", include("project.admin_project_urls")),
 ]

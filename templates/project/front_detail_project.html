@@ -37,6 +37,10 @@
                             <label for="name">Name</label>
                             <input type="text" id="name" name="name" value="Bruno Fernandas" required>
                         </div>
+                        <div class="input-group">
+                            <label for="name">Price</label>
+                            <input type="number" id="price" name="price" value="200" disabled>
+                        </div>
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="input-group">
@@ -51,12 +55,13 @@
                                 </div>
                             </div>
                         </div>
+                        
 
                         <div class="input-group">
                             <label for="scheduled_date_time">Schedule Date</label>
                             <input type="datetime-local" id="scheduled_date_time" name="scheduled_date_time" value="2025-10-10T10:00" required>
                         </div>
-                        <button type="submit">Submit</button>
+                        <button type="submit">Pay ₹200 & Schedule</button>
                         <a href="{% url 'properties' %}" class="cancel-button">cancel</a>
                     </form>
 

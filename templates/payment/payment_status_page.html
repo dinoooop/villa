@@ -1,0 +1,62 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block content %}
+<div class="properties  section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                {% if checkout.status == "paid" %}
+                    <h3>Your payment of ₹{{ checkout.amount|floatformat:2 }} was successful.</h3>
+                    <p>Order Id: {{ checkout.order_id }}</p>
+                    <p>Payment Id: {{ checkout.payment_id }}</p>
+                    <p>Payment Status: {{ checkout.status }}</p>
+                    <div class="mb-4"></div>
+                    <h4>Visiting Details</h4>
+                    <p>For scheduling a visit to: <strong>{{ project.title }}</strong></p>
+                    <p>Scheduled Date: {{ checkout.visit.scheduled_date_time }}</p>
+                    <p>Name: {{ checkout.visit.name }}</p>
+                    <p>Email: {{ checkout.visit.email }}</p>
+                    <p>Phone: {{ checkout.visit.phone }}</p>
+                    <p>We will contact you soon to confirm your visit.</p>
+                    <div class="mb-4"></div>
+                    <a href="{% url 'home' %}" class="th-button">Return to Home</a>
+                {% else %}
+                    <h4>Payment Failed</h4>
+                    <p>We're sorry, but your payment could not be processed. Please try again later.</p>
+                    <div class="mb-4"></div>
+                    <a href="{% url 'home' %}" class="th-button">Return to Home</a>
+                {% endif %}
+            </div>
+            <div class="col-lg-4">
+                <h4>Property Details</h4>
+                <div class="item">
+                    {% if project.image %}
+                    <a href="{% url 'front_detail_project' project.id %}">
+                        <img src="{{ project.image.url }}" alt="">
+                    </a>
+                    {% else %}
+                    <a href="{% url 'front_detail_project' project.id %}">
+                        <img src="{% static 'assets/images/placeholder.png' %}" alt="">
+                    </a>
+                    {% endif %}
+
+
+                    <span class="category">Luxury Villa</span>
+                    <h6>{{ project.price }}</h6>
+                    <h4><a href="{% url 'front_detail_project' project.id %}">{{ project.title }}</a></h4>
+                    <ul>
+                        <li>Builder: <span>{{ project.builder.first_name }}</span></li>
+                        <li>Bedrooms: <span>{{ project.bedrooms }}</span></li>
+                        <li>Bathrooms: <span>{{ project.bathrooms }}</span></li>
+                        <li>Area: <span>{{ project.area }} m2</span></li>
+                        <li>Floor: <span>{{ project.floor }} th</span></li>
+                        <li>Parking: <span>{{ project.parking }} Spots</span></li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
