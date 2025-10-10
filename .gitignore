@@ -1,1 +1,55 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+
+# === Django specific ===
+*.log
+*.pot
+*.pyc
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# === Environments ===
 .env
+.env.local
+venv/
+ENV/
+env/
+.venv/
+
+# === IDEs and Editors ===
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+
+# === Migrations (optional) ===
+# Uncomment below if you don’t want to commit migration files
+# **/migrations/*
+# !**/migrations/__init__.py
+
+# === Byte-compiled / optimized / DLL files ===
+*.py[cod]
+*$py.class
+
+# === Unit test / coverage reports ===
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+htmlcov/
+.pytest_cache/
+
+# === Build / packaging ===
+build/
+dist/
+*.egg-info/
+.eggs/

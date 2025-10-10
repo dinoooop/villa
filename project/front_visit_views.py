@@ -46,5 +46,3 @@ def create_visit(request, project_id):
 def list_visit(request):
     visits = Visit.objects.filter(project__builder=request.user).order_by("-scheduled_date_time")
     return render(request, "project/front_list_visit.html", {"visits": visits})
-
-
